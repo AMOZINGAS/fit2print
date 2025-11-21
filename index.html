@@ -539,7 +539,28 @@
   <footer>
     <p>© 2025 Fit2Print — Validando ideas, creando soluciones.</p>
   </footer>
+<script>
+  // Botones de WhatsApp
+  document.querySelectorAll('a[href*="wa.me"]').forEach(btn => {
+    btn.addEventListener("click", () => {
+      gtag("event", "click_whatsapp", {
+        event_category: "interacciones",
+        event_label: "Botón WhatsApp"
+      });
+    });
+  });
 
+  // Botón Empezar Diseño
+  const empezar = document.querySelector('a[href="design-system.html"]');
+  if (empezar) {
+    empezar.addEventListener("click", () => {
+      gtag("event", "click_empezar_diseno", {
+        event_category: "interacciones",
+        event_label: "Botón Empezar Diseño"
+      });
+    });
+  }
+</script>
 </body>
 <script>
   // Contador botón WhatsApp
