@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IA de Diseño | Imágenes perfectas en minutos</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22currentColor%22%20stroke-width=%222%22%3E%3Cpath%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%20d=%22M6%209V3h12v6%22/%3E%3Cpath%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%20d=%22M6%2018H4a2%202%200%2001-2-2V9a2%202%200%20012-2h16a2%202%200%20012%202v7a2%202%200%2001-2%202h-2%22/%3E%3Crect%20x=%228%22%20y=%2214%22%20width=%228%22%20height=%226%22%20rx=%221%22/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #10b981;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --light: #f8fafc;
+      --white: #ffffff;
+    }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--dark);
+      background: var(--light);
+    }
+    
+    /* HEADER */
+    header {
+      background: var(--white);
+      padding: 1rem 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .logo span { color: var(--secondary); }
+    
+    .header-cta {
+      background: var(--secondary);
+      color: var(--white);
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .header-cta:hover {
+      background: #059669;
+      transform: translateY(-2px);
+    }
+    
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+      color: var(--white);
+      padding: 5rem 1.5rem;
+      text-align: center;
+    }
+    
+    .hero-content { max-width: 900px; margin: 0 auto; }
+    
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+    
+    .hero .subtitle {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      opacity: 0.95;
+      margin-bottom: 2.5rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: #25D366;
+      color: var(--white);
+      padding: 1.25rem 2.5rem;
+      border-radius: 60px;
+      text-decoration: none;
+      font-size: 1.3rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 35px rgba(37, 211, 102, 0.5);
+    }
+    
+    .cta-button.secondary {
+      background: var(--white);
+      color: var(--primary);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .cta-button.secondary:hover {
+      background: var(--light);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+    }
+    
+    .cta-button svg {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      padding: 1rem;
+    }
+    
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.3s ease;
+    }
+    
+    .modal-overlay.active .modal-content {
+      transform: scale(1) translateY(0);
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: var(--gray);
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    
+    .modal-close:hover { color: var(--dark); }
+    
+    .modal-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+    
+    .modal-icon svg {
+      width: 40px;
+      height: 40px;
+      color: var(--white);
+    }
+    
+    .modal-content h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+    
+    .modal-content > p {
+      color: var(--gray);
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .modal-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    
+    .modal-feature {
+      background: var(--light);
+      color: var(--secondary);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    
+    .modal-cta {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .modal-note {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+    
+    .hero-note {
+      margin-top: 1.5rem;
+      font-size: 1rem;
+      opacity: 0.85;
+    }
+    
+    /* SECTIONS */
+    section { padding: 5rem 1.5rem; }
+    
+    .container { max-width: 1100px; margin: 0 auto; }
+    
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 3.5rem;
+      color: var(--dark);
+    }
+    
+    /* PROBLEMS */
+    .problems { background: var(--white); }
+    
+    .problems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .problem-card {
+      background: var(--light);
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      border-left: 5px solid var(--secondary);
+      transition: transform 0.3s ease;
+    }
+    
+    .problem-card:hover { transform: translateY(-5px); }
+    
+    .problem-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--secondary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .problem-icon svg {
+      width: 30px;
+      height: 30px;
+      color: var(--white);
+    }
+    
+    .problem-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--dark);
+    }
+    
+    .problem-card p {
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+    
+    /* HOW IT WORKS */
+    .how-it-works { background: var(--light); }
+    
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      counter-reset: step;
+    }
+    
+    .step {
+      background: var(--white);
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+      position: relative;
+    }
+    
+    .step-number {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 0 auto 1.5rem;
+    }
+    
+    .step h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+    
+    .step p {
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+    
+    /* FINAL CTA */
+    .final-cta {
+      background: linear-gradient(135deg, var(--dark) 0%, #334155 100%);
+      color: var(--white);
+      text-align: center;
+    }
+    
+    .final-cta h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .final-cta p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: var(--white);
+      text-align: center;
+      padding: 2rem 1.5rem;
+      font-size: 1rem;
+    }
+    
+    footer a {
+      color: var(--secondary);
+      text-decoration: none;
+    }
+    
+    /* ACCESSIBILITY & RESPONSIVE */
+    @media (max-width: 768px) {
+      body { font-size: 16px; }
+      .hero { padding: 3.5rem 1.25rem; }
+      section { padding: 3.5rem 1.25rem; }
+      .cta-button { padding: 1rem 2rem; font-size: 1.15rem; }
+      .header-cta { display: none; }
+    }
+    
+    /* Focus states for accessibility */
+    a:focus, button:focus {
+      outline: 3px solid var(--secondary);
+      outline-offset: 3px;
+    }
+    
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-content">
+      <a href="#" class="logo">Fit2<span>Print</span></a>
+      <a href="https://wa.me/NUMERO" class="header-cta" target="_blank" rel="noopener">
+        💬 Contactar
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Diseño asistido e inteligente: Tu IA personal para imprenta perfecta</h1>
+      <p class="subtitle">Corregimos faltas de ortografía en tus diseños y los adaptamos al formato exacto de imprenta. Tazas, camisetas, gorras y más. La calidad de una agencia, la rapidez de una IA.</p>
+      <a href="https://wa.me/NUMERO" class="cta-button" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar imagen por WhatsApp
+      </a>
+      <p class="hero-note">✨ Respuesta en menos de 10 minutos</p>
+      
+      <div class="hero-buttons">
+        <a href="design-system.html" class="cta-button secondary">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          Empezar diseño
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEMS -->
+  <section class="problems">
+    <div class="container">
+      <h2 class="section-title">Problemas que resolvemos</h2>
+      <div class="problems-grid">
+        <div class="problem-card">
+          <div class="problem-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3>Ahorra tiempo valioso</h3>
+          <p>Olvídate de horas perdidas en correcciones manuales. Nosotros lo hacemos rápido y bien.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+          </div>
+          <h3>Sin líos de formatos</h3>
+          <p>¿No sabes qué medidas necesita la imprenta? Nosotros adaptamos tu imagen al formato exacto del producto.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3>Respuesta inmediata</h3>
+          <p>Sin intermediarios lentos ni esperas eternas. Atención directa y resultados al instante.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="section-title">¿Cómo funciona?</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Envía tu imagen</h3>
+          <p>Sube tu diseño y selecciona el producto: taza, camiseta, gorra, cojín, etc.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Nuestra IA lo procesa</h3>
+          <p>Corregimos errores ortográficos y ajustamos al formato exacto de imprenta.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Recibe tu archivo</h3>
+          <p>En minutos tendrás tu diseño listo para enviar a sublimación o serigrafía.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>¿Listo para probar?</h2>
+      <p>Envíanos tu primera imagen y descubre lo fácil que es tener diseños perfectos.</p>
+      <a href="https://wa.me/NUMERO" class="cta-button" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comenzar ahora por WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Fit2Print — Validando ideas, creando soluciones.</p>
+  </footer>
+
+</body>
+<script>
+  // Contador botón WhatsApp
+  const waButtons = document.querySelectorAll('a[href*="wa.me"]');
+  waButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      let count = Number(localStorage.getItem("wa_clicks") || 0);
+      localStorage.setItem("wa_clicks", count + 1);
+      console.log("Clicks WhatsApp:", count + 1);
+    });
+  });
+
+  // Contador botón Empezar Diseño
+  const designBtn = document.querySelector('a[href="design-system.html"]');
+  if (designBtn) {
+    designBtn.addEventListener("click", () => {
+      let count = Number(localStorage.getItem("design_clicks") || 0);
+      localStorage.setItem("design_clicks", count + 1);
+      console.log("Clicks Empezar Diseño:", count + 1);
+    });
+  }
+</script>
+</html>

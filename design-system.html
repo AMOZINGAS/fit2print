@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fit2Print | Prepara tu diseño para imprenta</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22currentColor%22%20stroke-width=%222%22%3E%3Cpath%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%20d=%22M6%209V3h12v6%22/%3E%3Cpath%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%20d=%22M6%2018H4a2%202%200%2001-2-2V9a2%202%200%20012-2h16a2%202%200%20012%202v7a2%202%200%2001-2%202h-2%22/%3E%3Crect%20x=%228%22%20y=%2214%22%20width=%228%22%20height=%226%22%20rx=%221%22/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #10b981;
+      --accent: #7c3aed;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --gray-light: #94a3b8;
+      --border: #e2e8f0;
+      --light: #f8fafc;
+      --white: #ffffff;
+      --orange: #f97316;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--dark);
+      background: var(--light);
+      min-height: 100vh;
+    }
+    
+    /* HEADER */
+    .app-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .logo span { color: var(--secondary); }
+    
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logo-icon svg { width: 20px; height: 20px; color: white; }
+    
+    .header-actions { display: flex; gap: 0.75rem; align-items: center; }
+    
+    .header-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      border: none;
+    }
+    
+    .header-btn.outline {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--dark);
+    }
+    
+    .header-btn.outline:hover { border-color: var(--primary); color: var(--primary); }
+    
+    .header-btn.primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .header-btn.primary:hover { background: var(--primary-dark); }
+    
+    .header-btn svg { width: 18px; height: 18px; }
+    
+    /* MAIN LAYOUT */
+    .app-main {
+      display: flex;
+      min-height: calc(100vh - 65px);
+    }
+    
+    /* SIDEBAR - Product Selection */
+    .sidebar {
+      width: 320px;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+    
+    .sidebar-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gray-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+    
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    
+    .product-card {
+      background: var(--light);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .product-card:hover { border-color: var(--border); transform: translateY(-2px); }
+    .product-card.selected { border-color: var(--primary); background: rgba(37,99,235,0.05); }
+    
+    .product-icon {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    
+    .product-card h4 { font-size: 0.85rem; font-weight: 600; color: var(--dark); }
+    .product-card p { font-size: 0.7rem; color: var(--gray); margin-top: 0.25rem; }
+    
+    /* Options Panel */
+    .options-section { margin-bottom: 1.5rem; }
+    
+    .options-section label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    
+    .options-section select,
+    .options-section input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: var(--white);
+      transition: border-color 0.2s;
+    }
+    
+    .options-section select:focus,
+    .options-section input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .checkbox-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: var(--light);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    
+    .checkbox-item:hover { background: var(--border); }
+    .checkbox-item.checked { border-color: var(--primary); background: rgba(37,99,235,0.05); }
+    
+    .checkbox-item input { display: none; }
+    
+    .checkbox-custom {
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    
+    .checkbox-item.checked .checkbox-custom { background: var(--primary); border-color: var(--primary); }
+    .checkbox-custom svg { width: 14px; height: 14px; color: white; opacity: 0; }
+    .checkbox-item.checked .checkbox-custom svg { opacity: 1; }
+    
+    .checkbox-label { font-size: 0.9rem; font-weight: 500; }
+    
+    /* CANVAS AREA */
+    .canvas-area {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #e5e7eb;
+      background-image: 
+        linear-gradient(45deg, #d1d5db 25%, transparent 25%),
+        linear-gradient(-45deg, #d1d5db 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #d1d5db 75%),
+        linear-gradient(-45deg, transparent 75%, #d1d5db 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    }
+    
+    .canvas-container {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+    }
+    
+    .canvas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .canvas-title { font-size: 1.1rem; font-weight: 700; }
+    
+    .canvas-badge {
+      background: var(--secondary);
+      color: white;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    /* Product Preview */
+    .product-preview {
+      position: relative;
+      background: var(--light);
+      border-radius: 16px;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    
+    .product-mockup {
+      font-size: 8rem;
+      opacity: 0.3;
+    }
+    
+    .upload-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(37, 99, 235, 0.03);
+      border: 3px dashed var(--primary);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .upload-overlay:hover { background: rgba(37, 99, 235, 0.08); }
+    
+    .upload-icon {
+      width: 70px;
+      height: 70px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .upload-icon svg { width: 32px; height: 32px; color: white; }
+    
+    .upload-overlay h3 { font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--dark); }
+    .upload-overlay p { color: var(--gray); font-size: 0.9rem; }
+    
+    .format-info {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1rem;
+      background: var(--light);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    
+    .format-item { text-align: center; }
+    .format-item span { display: block; font-size: 0.75rem; color: var(--gray); }
+    .format-item strong { font-size: 0.95rem; color: var(--dark); }
+    
+    .canvas-instructions {
+      background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(124,58,237,0.1));
+      border-radius: 12px;
+      padding: 1rem;
+    }
+    
+    .canvas-instructions h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .canvas-instructions p { font-size: 0.85rem; color: var(--gray); }
+    
+    /* ACTION BAR */
+    .action-bar {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      bottom: 0;
+    }
+    
+    .action-info { display: flex; align-items: center; gap: 1rem; }
+    
+    .action-info span {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+    
+    .action-info svg { width: 18px; height: 18px; }
+    
+    .action-buttons { display: flex; gap: 0.75rem; }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      text-decoration: none;
+    }
+    
+    .btn-secondary { background: var(--light); color: var(--dark); }
+    .btn-secondary:hover { background: var(--border); }
+    
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    }
+    
+    .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    }
+    
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
+    
+    .btn svg { width: 20px; height: 20px; }
+    
+    /* PROCESSING MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      padding: 1rem;
+    }
+    
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    
+    .modal-content {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 2.5rem;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      transform: scale(0.9);
+      transition: all 0.3s;
+    }
+    
+    .modal-overlay.active .modal-content { transform: scale(1); }
+    
+    .loader {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      position: relative;
+    }
+    
+    .loader-circle {
+      width: 100%;
+      height: 100%;
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .loader-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .loader-icon svg { width: 32px; height: 32px; color: var(--primary); }
+    
+    .modal-content h3 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .modal-content > p { color: var(--gray); margin-bottom: 1.5rem; }
+    
+    .progress-steps { text-align: left; margin-bottom: 1.5rem; }
+    
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      color: var(--gray-light);
+      font-size: 0.95rem;
+    }
+    
+    .progress-step.active { color: var(--dark); }
+    .progress-step.done { color: var(--secondary); }
+    
+    .step-icon {
+      width: 26px;
+      height: 26px;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .progress-step.done .step-icon { background: var(--secondary); border-color: var(--secondary); }
+    .step-icon svg { width: 14px; height: 14px; color: white; }
+    
+    /* REDIRECT MODAL */
+    .redirect-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+    
+    .redirect-icon svg { width: 40px; height: 40px; color: white; }
+    
+    .whatsapp-btn {
+      background: #25D366;
+      color: white;
+      padding: 1.1rem 2rem;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.3s;
+    }
+    
+    .whatsapp-btn:hover { transform: scale(1.03); background: #1fb855; }
+    .whatsapp-btn svg { width: 24px; height: 24px; }
+    
+    .modal-note { margin-top: 1rem; font-size: 0.85rem; color: var(--gray); }
+    
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .app-main { flex-direction: column; }
+      .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
+      .canvas-area { min-height: 500px; }
+    }
+    
+    @media (max-width: 600px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .header-actions { gap: 0.5rem; }
+      .header-btn span { display: none; }
+      .action-bar { flex-direction: column; gap: 1rem; }
+      .action-info { display: none; }
+      .action-buttons { width: 100%; }
+      .action-buttons .btn { flex: 1; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      </div>
+      Fit2<span>Print</span>
+    </a>
+    
+    <div class="header-actions">
+      <a href="index.html" class="header-btn outline">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>Inicio</span>
+      </a>
+      <a href="https://wa.me/NUMERO" class="header-btn primary" target="_blank">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Ayuda</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="app-main">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <h3 class="sidebar-title">1. Elige el producto</h3>
+      <div class="product-grid">
+        <div class="product-card selected" data-product="taza" data-emoji="☕">
+          <div class="product-icon">☕</div>
+          <h4>Taza</h4>
+          <p>11oz estándar</p>
+        </div>
+        <div class="product-card" data-product="camiseta" data-emoji="👕">
+          <div class="product-icon">👕</div>
+          <h4>Camiseta</h4>
+          <p>Frente o espalda</p>
+        </div>
+        <div class="product-card" data-product="gorra" data-emoji="🧢">
+          <div class="product-icon">🧢</div>
+          <h4>Gorra</h4>
+          <p>Bordado o sublimación</p>
+        </div>
+        <div class="product-card" data-product="mousepad" data-emoji="🖱️">
+          <div class="product-icon">🖱️</div>
+          <h4>Mousepad</h4>
+          <p>Rectangular</p>
+        </div>
+        <div class="product-card" data-product="cojin" data-emoji="🛋️">
+          <div class="product-icon">🛋️</div>
+          <h4>Cojín</h4>
+          <p>40x40 cm</p>
+        </div>
+        <div class="product-card" data-product="poster" data-emoji="🖼️">
+          <div class="product-icon">🖼️</div>
+          <h4>Póster</h4>
+          <p>Varios tamaños</p>
+        </div>
+        <div class="product-card" data-product="llavero" data-emoji="🔑">
+          <div class="product-icon">🔑</div>
+          <h4>Llavero</h4>
+          <p>Acrílico o metal</p>
+        </div>
+        <div class="product-card" data-product="otro" data-emoji="📦">
+          <div class="product-icon">📦</div>
+          <h4>Otro</h4>
+          <p>Personalizado</p>
+        </div>
+      </div>
+      
+      <h3 class="sidebar-title">2. Tamaño de impresión</h3>
+      <div class="options-section">
+        <select id="sizeSelect">
+          <option value="auto">Detectar automáticamente</option>
+          <option value="taza-11oz">Taza 11oz (95 x 200 mm)</option>
+          <option value="taza-15oz">Taza 15oz (102 x 220 mm)</option>
+          <option value="camiseta-a4">Camiseta A4 (21 x 29.7 cm)</option>
+          <option value="camiseta-a3">Camiseta A3 (29.7 x 42 cm)</option>
+          <option value="gorra-frente">Gorra frente (10 x 6 cm)</option>
+          <option value="mousepad">Mousepad (24 x 20 cm)</option>
+          <option value="cojin-40">Cojín 40x40 cm</option>
+          <option value="custom">Medidas personalizadas...</option>
+        </select>
+      </div>
+      
+      <h3 class="sidebar-title">3. ¿Qué necesitas?</h3>
+      <div class="options-section">
+        <div class="checkbox-list">
+          <label class="checkbox-item checked">
+            <input type="checkbox" checked>
+            <span class="checkbox-custom">
+              <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="checkbox-label">Corregir ortografía</span>
+          </label>
+          <label class="checkbox-item checked">
+            <input type="checkbox" checked>
+            <span class="checkbox-custom">
+              <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="checkbox-label">Ajustar al formato</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox">
+            <span class="checkbox-custom">
+              <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="checkbox-label">Mejorar resolución</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox">
+            <span class="checkbox-custom">
+              <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="checkbox-label">Quitar fondo</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox">
+            <span class="checkbox-custom">
+              <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="checkbox-label">Efecto espejo (tazas)</span>
+          </label>
+        </div>
+      </div>
+      
+      <h3 class="sidebar-title">4. Notas adicionales</h3>
+      <div class="options-section">
+        <textarea id="notes" rows="3" placeholder="Ej: Quiero el texto más grande, cambiar color rojo por azul..." style="width:100%;padding:0.75rem;border:2px solid var(--border);border-radius:10px;font-size:0.9rem;font-family:inherit;resize:vertical;"></textarea>
+      </div>
+    </aside>
+
+    <!-- CANVAS AREA -->
+    <main class="canvas-area">
+      <div class="canvas-container">
+        <div class="canvas-header">
+          <h2 class="canvas-title">Vista previa: <span id="productName">Taza</span></h2>
+          <span class="canvas-badge">Listo para imprenta</span>
+        </div>
+        
+        <div class="product-preview">
+          <div class="product-mockup" id="productMockup">☕</div>
+          <div class="upload-overlay" id="uploadArea">
+            <div class="upload-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            </div>
+            <h3>Sube tu imagen aquí</h3>
+            <p>Arrastra o haz clic para seleccionar</p>
+          </div>
+        </div>
+        
+        <div class="format-info">
+          <div class="format-item">
+            <span>Formato recomendado</span>
+            <strong>PNG / JPG</strong>
+          </div>
+          <div class="format-item">
+            <span>Resolución mínima</span>
+            <strong>300 DPI</strong>
+          </div>
+          <div class="format-item">
+            <span>Modo de color</span>
+            <strong>CMYK / RGB</strong>
+          </div>
+        </div>
+        
+        <div class="canvas-instructions">
+          <h4>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:18px;height:18px;color:var(--primary)"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            ¿No tienes la imagen lista?
+          </h4>
+          <p>No te preocupes. Sube lo que tengas y nuestra IA se encargará de ajustar el formato, corregir errores y preparar tu archivo para imprenta.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <div class="action-info">
+      <span>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Procesamiento instantáneo
+      </span>
+      <span>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Listo para imprenta
+      </span>
+    </div>
+    <div class="action-buttons">
+      <a href="index.html" class="btn btn-secondary">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Volver
+      </a>
+      <button class="btn btn-primary" id="processBtn">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Procesar diseño
+      </button>
+    </div>
+  </div>
+
+  <!-- PROCESSING MODAL -->
+  <div class="modal-overlay" id="processingModal">
+    <div class="modal-content">
+      <div class="loader">
+        <div class="loader-circle"></div>
+        <div class="loader-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+      </div>
+      <h3>Preparando tu diseño...</h3>
+      <p>Estamos ajustando tu imagen para imprenta</p>
+      
+      <div class="progress-steps">
+        <div class="progress-step done" id="step1">
+          <span class="step-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </span>
+          Imagen recibida
+        </div>
+        <div class="progress-step active" id="step2">
+          <span class="step-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </span>
+          Verificando ortografía...
+        </div>
+        <div class="progress-step" id="step3">
+          <span class="step-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </span>
+          Ajustando formato de imprenta
+        </div>
+        <div class="progress-step" id="step4">
+          <span class="step-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </span>
+          Generando archivo final
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REDIRECT MODAL -->
+  <div class="modal-overlay" id="redirectModal">
+    <div class="modal-content">
+      <div class="redirect-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h3>¡Tu diseño está casi listo!</h3>
+      <p>Para enviarte el archivo preparado para imprenta, continúa por WhatsApp. Ahí recibirás tu diseño corregido y listo para usar.</p>
+      
+      <a href="https://wa.me/NUMERO?text=Hola!%20Acabo%20de%20preparar%20un%20dise%C3%B1o%20para%20imprenta.%20Producto%3A%20" class="whatsapp-btn" id="whatsappLink" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Recibir mi diseño
+      </a>
+      <p class="modal-note">Recibirás tu archivo listo en minutos ✨</p>
+    </div>
+  </div>
+
+  <script>
+    // Product selection
+    const productCards = document.querySelectorAll('.product-card');
+    const productName = document.getElementById('productName');
+    const productMockup = document.getElementById('productMockup');
+    const whatsappLink = document.getElementById('whatsappLink');
+    let selectedProduct = 'Taza';
+    
+    productCards.forEach(card => {
+      card.addEventListener('click', () => {
+        productCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        selectedProduct = card.querySelector('h4').textContent;
+        productName.textContent = selectedProduct;
+        productMockup.textContent = card.dataset.emoji;
+        updateWhatsAppLink();
+      });
+    });
+    
+    function updateWhatsAppLink() {
+      const size = document.getElementById('sizeSelect').value;
+      const notes = document.getElementById('notes').value;
+      const checks = [...document.querySelectorAll('.checkbox-item.checked .checkbox-label')].map(l => l.textContent).join(', ');
+      
+      let msg = `Hola! Acabo de preparar un diseño para imprenta.%0A%0A`;
+      msg += `📦 Producto: ${selectedProduct}%0A`;
+      msg += `📐 Tamaño: ${size}%0A`;
+      msg += `✅ Servicios: ${checks}%0A`;
+      if (notes) msg += `📝 Notas: ${notes}%0A`;
+      msg += `%0AQuedo atento a enviar mi imagen.`;
+      
+      whatsappLink.href = `https://wa.me/NUMERO?text=${msg}`;
+    }
+    
+    document.getElementById('sizeSelect').addEventListener('change', updateWhatsAppLink);
+    document.getElementById('notes').addEventListener('input', updateWhatsAppLink);
+    
+    // Checkboxes
+    const checkboxItems = document.querySelectorAll('.checkbox-item');
+    checkboxItems.forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('checked');
+        updateWhatsAppLink();
+      });
+    });
+    
+    // Upload area
+    const uploadArea = document.getElementById('uploadArea');
+    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.background = 'rgba(37,99,235,0.1)'; });
+    uploadArea.addEventListener('dragleave', () => { uploadArea.style.background = ''; });
+    uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.style.background = ''; showProcessing(); });
+    uploadArea.addEventListener('click', () => showProcessing());
+    
+    // Process button
+    const processBtn = document.getElementById('processBtn');
+    const processingModal = document.getElementById('processingModal');
+    const redirectModal = document.getElementById('redirectModal');
+    
+    processBtn.addEventListener('click', showProcessing);
+    
+    function showProcessing() {
+      updateWhatsAppLink();
+      processingModal.classList.add('active');
+      
+      const steps = ['step1', 'step2', 'step3', 'step4'];
+      let current = 1;
+      
+      const interval = setInterval(() => {
+        if (current < steps.length) {
+          document.getElementById(steps[current - 1]).classList.remove('active');
+          document.getElementById(steps[current - 1]).classList.add('done');
+          document.getElementById(steps[current]).classList.add('active');
+          current++;
+        } else {
+          clearInterval(interval);
+          document.getElementById(steps[current - 1]).classList.remove('active');
+          document.getElementById(steps[current - 1]).classList.add('done');
+          
+          setTimeout(() => {
+            processingModal.classList.remove('active');
+            redirectModal.classList.add('active');
+          }, 600);
+        }
+      }, 1000);
+    }
+    
+    redirectModal.addEventListener('click', (e) => {
+      if (e.target === redirectModal) redirectModal.classList.remove('active');
+    });
+    
+    // Initial update
+    updateWhatsAppLink();
+  </script>
+
+</body>
+</html>
